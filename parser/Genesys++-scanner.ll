@@ -101,7 +101,7 @@ L      [A-Za-z0-9_.]+
 [iI][nN][tT]      {return yy::genesyspp_parser::make_fINT(obj_t(0, std::string(yytext)), loc);}
 
 [eE][xX][pP][oO]  {return yy::genesyspp_parser::make_fEXPO(obj_t(0, std::string(yytext)), loc);}
-[nN][oO][rR][mM]  {return yy::genesyspp_parser::make_fNORM(obj_t(0, std::string(yytext)), loc); std::cout << "NORMAL\n";}
+[nN][oO][rR][mM]  {return yy::genesyspp_parser::make_fNORM(obj_t(0, std::string(yytext)), loc);}
 [uU][nN][iI][fF]  {return yy::genesyspp_parser::make_fUNIF(obj_t(0, std::string(yytext)), loc);}
 [wW][eE][iI][bB]  {return yy::genesyspp_parser::make_fWEIB(obj_t(0, std::string(yytext)), loc);}
 [lL][oO][gG][nN]  {return yy::genesyspp_parser::make_fLOGN(obj_t(0, std::string(yytext)), loc);}
@@ -148,11 +148,11 @@ L      [A-Za-z0-9_.]+
 
 
 {L}   {
-        std::cout << "Found LITTERAL: " << yytext << std::endl;
         //getAttributeValue not implemented, change comparisson on future
         double attribute = driver.getModel()->getSimulation()->getCurrentEntity()->getAttributeValue(std::string(yytext));
         if(attribute != -1){
-          return yy::genesyspp_parser::make_ATRIB(obj_t(attribute, Util::TypeOf<Attribute>(), -1),loc);
+          //does nothing now because getAttributeValue not implemented
+          //return yy::genesyspp_parser::make_ATRIB(obj_t(attribute, Util::TypeOf<Attribute>(), -1),loc);
         }
         //iterates through the model Infrastructures and returns its id and the matching token
         std::list<std::string>* listaDisponiveis = driver.getModel()->getInfraManager()->getInfrastructureTypenames();
@@ -173,7 +173,6 @@ L      [A-Za-z0-9_.]+
             }
           }
         }
-        std::cout << "NOT Found LITTERAL"<< std::endl;
         //Case not found retturns a illegal token
         return yy::genesyspp_parser::make_ILLEGAL(obj_t(0, std::string("Illegal")), loc);
       }
@@ -201,12 +200,10 @@ genesyspp_driver::scan_begin_file ()
 void genesyspp_driver::scan_begin_str ()
 {
   //yy_flex_debug = trace_scanning;
-  if(!str_to_parse.empty()){
-    //std::cout << "String nao vazia\n";
+  if(!str_to_parse.empty()){    
     yy_scan_string (str_to_parse.c_str()); //maybe throw exception on else
   }else{
     std::string str("0");
-    //std::cout << "String vazia\n";
     yy_scan_string (str.c_str()); //maybe throw exception on else
   }
 }

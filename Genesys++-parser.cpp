@@ -1,4 +1,4 @@
-// A Bison parser, made by GNU Bison 3.2.
+// A Bison parser, made by GNU Bison 3.1.
 
 // Skeleton implementation for Bison LALR(1) parsers in C++
 
@@ -30,23 +30,31 @@
 // This special exception was added by the Free Software Foundation in
 // version 2.2 of Bison.
 
-// Undocumented macros, especially those whose name start with YY_,
-// are private implementation details.  Do not rely on them.
 
+// First part of user declarations.
 
+#line 37 "../Genesys++-parser.cpp" // lalr1.cc:407
 
-
+# ifndef YY_NULLPTR
+#  if defined __cplusplus && 201103L <= __cplusplus
+#   define YY_NULLPTR nullptr
+#  else
+#   define YY_NULLPTR 0
+#  endif
+# endif
 
 #include "Genesys++-parser.h"
 
+// User implementation prologue.
 
+#line 51 "../Genesys++-parser.cpp" // lalr1.cc:415
 // Unqualified %code blocks.
-#line 34 "Genesys++-parser.yy" // lalr1.cc:437
+#line 34 "Genesys++-parser.yy" // lalr1.cc:416
 
 # include "Genesys++-driver.h"
 
 
-#line 50 "../Genesys++-parser.cpp" // lalr1.cc:437
+#line 58 "../Genesys++-parser.cpp" // lalr1.cc:416
 
 
 #ifndef YY_
@@ -141,7 +149,7 @@
 
 
 namespace yy {
-#line 145 "../Genesys++-parser.cpp" // lalr1.cc:512
+#line 153 "../Genesys++-parser.cpp" // lalr1.cc:491
 
   /* Return YYSTR after stripping away unnecessary quotes and
      backslashes, so that it's suitable for yyerror.  The heuristic is
@@ -239,8 +247,8 @@ namespace yy {
   genesyspp_parser::stack_symbol_type::stack_symbol_type ()
   {}
 
-  genesyspp_parser::stack_symbol_type::stack_symbol_type (YY_RVREF (stack_symbol_type) that)
-    : super_type (YY_MOVE (that.state), YY_MOVE (that.location))
+  genesyspp_parser::stack_symbol_type::stack_symbol_type (const stack_symbol_type& that)
+    : super_type (that.state, that.location)
   {
     switch (that.type_get ())
     {
@@ -311,107 +319,18 @@ namespace yy {
       case 83: // funcaoUser
       case 84: // listaparm
       case 85: // illegal
-        value.YY_MOVE_OR_COPY< obj_t > (YY_MOVE (that.value));
+        value.copy< obj_t > (that.value);
         break;
 
       default:
         break;
     }
 
-#if defined __cplusplus && 201103L <= __cplusplus
-    // that is emptied.
-    that.state = empty_state;
-#endif
   }
 
-  genesyspp_parser::stack_symbol_type::stack_symbol_type (state_type s, YY_MOVE_REF (symbol_type) that)
-    : super_type (s, YY_MOVE (that.location))
+  genesyspp_parser::stack_symbol_type::stack_symbol_type (state_type s, symbol_type& that)
+    : super_type (s, that.location)
   {
-    switch (that.type_get ())
-    {
-      case 3: // NUMD
-      case 4: // NUMH
-      case 5: // ATRIB
-      case 6: // VARI
-      case 7: // FORM
-      case 8: // QUEUE
-      case 9: // RES
-      case 10: // oLE
-      case 11: // oGE
-      case 12: // oEQ
-      case 13: // oNE
-      case 14: // oAND
-      case 15: // oOR
-      case 16: // oNOT
-      case 17: // fSIN
-      case 18: // fCOS
-      case 19: // fAINT
-      case 20: // fMOD
-      case 21: // fINT
-      case 22: // fFRAC
-      case 23: // fEXPO
-      case 24: // fNORM
-      case 25: // fUNIF
-      case 26: // fWEIB
-      case 27: // fLOGN
-      case 28: // fGAMM
-      case 29: // fERLA
-      case 30: // fTRIA
-      case 31: // fBETA
-      case 32: // fDISC
-      case 33: // fTNOW
-      case 34: // fTFIN
-      case 35: // fNR
-      case 36: // fMR
-      case 37: // fIRF
-      case 38: // fRESSEIZES
-      case 39: // fSTATE
-      case 40: // fNQ
-      case 41: // fFIRSTINQ
-      case 42: // fLASTINQ
-      case 43: // cIF
-      case 44: // cELSE
-      case 45: // cFOR
-      case 46: // cTO
-      case 47: // cDO
-      case 48: // ILLEGAL
-      case 65: // input
-      case 66: // programa
-      case 67: // expressao
-      case 68: // numero
-      case 69: // aritmetica
-      case 70: // relacional
-      case 71: // comando
-      case 72: // comandoIF
-      case 73: // comandoFOR
-      case 74: // funcao
-      case 75: // atributo
-      case 76: // atribuicao
-      case 77: // variavel
-      case 78: // formula
-      case 79: // funcaoTrig
-      case 80: // funcaoArit
-      case 81: // funcaoProb
-      case 82: // funcaoStrc
-      case 83: // funcaoUser
-      case 84: // listaparm
-      case 85: // illegal
-        value.move< obj_t > (YY_MOVE (that.value));
-        break;
-
-      default:
-        break;
-    }
-
-    // that is emptied.
-    that.type = empty_symbol;
-  }
-
-#if defined __cplusplus && __cplusplus < 201103L
-  genesyspp_parser::stack_symbol_type&
-  genesyspp_parser::stack_symbol_type::operator= (stack_symbol_type& that)
-  {
-    state = that.state;
     switch (that.type_get ())
     {
       case 3: // NUMD
@@ -488,12 +407,94 @@ namespace yy {
         break;
     }
 
-    location = that.location;
     // that is emptied.
-    that.state = empty_state;
+    that.type = empty_symbol;
+  }
+
+  genesyspp_parser::stack_symbol_type&
+  genesyspp_parser::stack_symbol_type::operator= (const stack_symbol_type& that)
+  {
+    state = that.state;
+    switch (that.type_get ())
+    {
+      case 3: // NUMD
+      case 4: // NUMH
+      case 5: // ATRIB
+      case 6: // VARI
+      case 7: // FORM
+      case 8: // QUEUE
+      case 9: // RES
+      case 10: // oLE
+      case 11: // oGE
+      case 12: // oEQ
+      case 13: // oNE
+      case 14: // oAND
+      case 15: // oOR
+      case 16: // oNOT
+      case 17: // fSIN
+      case 18: // fCOS
+      case 19: // fAINT
+      case 20: // fMOD
+      case 21: // fINT
+      case 22: // fFRAC
+      case 23: // fEXPO
+      case 24: // fNORM
+      case 25: // fUNIF
+      case 26: // fWEIB
+      case 27: // fLOGN
+      case 28: // fGAMM
+      case 29: // fERLA
+      case 30: // fTRIA
+      case 31: // fBETA
+      case 32: // fDISC
+      case 33: // fTNOW
+      case 34: // fTFIN
+      case 35: // fNR
+      case 36: // fMR
+      case 37: // fIRF
+      case 38: // fRESSEIZES
+      case 39: // fSTATE
+      case 40: // fNQ
+      case 41: // fFIRSTINQ
+      case 42: // fLASTINQ
+      case 43: // cIF
+      case 44: // cELSE
+      case 45: // cFOR
+      case 46: // cTO
+      case 47: // cDO
+      case 48: // ILLEGAL
+      case 65: // input
+      case 66: // programa
+      case 67: // expressao
+      case 68: // numero
+      case 69: // aritmetica
+      case 70: // relacional
+      case 71: // comando
+      case 72: // comandoIF
+      case 73: // comandoFOR
+      case 74: // funcao
+      case 75: // atributo
+      case 76: // atribuicao
+      case 77: // variavel
+      case 78: // formula
+      case 79: // funcaoTrig
+      case 80: // funcaoArit
+      case 81: // funcaoProb
+      case 82: // funcaoStrc
+      case 83: // funcaoUser
+      case 84: // listaparm
+      case 85: // illegal
+        value.copy< obj_t > (that.value);
+        break;
+
+      default:
+        break;
+    }
+
+    location = that.location;
     return *this;
   }
-#endif
+
 
   template <typename Base>
   void
@@ -525,26 +526,22 @@ namespace yy {
 #endif
 
   void
-  genesyspp_parser::yypush_ (const char* m, YY_MOVE_REF (stack_symbol_type) sym)
+  genesyspp_parser::yypush_ (const char* m, state_type s, symbol_type& sym)
+  {
+    stack_symbol_type t (s, sym);
+    yypush_ (m, t);
+  }
+
+  void
+  genesyspp_parser::yypush_ (const char* m, stack_symbol_type& s)
   {
     if (m)
-      YY_SYMBOL_PRINT (m, sym);
-    yystack_.push (YY_MOVE (sym));
+      YY_SYMBOL_PRINT (m, s);
+    yystack_.push (s);
   }
 
   void
-  genesyspp_parser::yypush_ (const char* m, state_type s, YY_MOVE_REF (symbol_type) sym)
-  {
-#if defined __cplusplus && 201103L <= __cplusplus
-    yypush_ (m, stack_symbol_type (s, std::move (sym)));
-#else
-    stack_symbol_type ss (s, sym);
-    yypush_ (m, ss);
-#endif
-  }
-
-  void
-  genesyspp_parser::yypop_ (int n)
+  genesyspp_parser::yypop_ (unsigned n)
   {
     yystack_.pop (n);
   }
@@ -599,12 +596,6 @@ namespace yy {
   }
 
   int
-  genesyspp_parser::operator() ()
-  {
-    return parse ();
-  }
-
-  int
   genesyspp_parser::parse ()
   {
     // State.
@@ -633,20 +624,20 @@ namespace yy {
 
 
     // User initialization code.
-#line 27 "Genesys++-parser.yy" // lalr1.cc:783
+    #line 27 "Genesys++-parser.yy" // lalr1.cc:746
 {
   // Initialize the initial location.
   yyla.location.begin.filename = yyla.location.end.filename = &driver.getFile();
 }
 
-#line 643 "../Genesys++-parser.cpp" // lalr1.cc:783
+#line 634 "../Genesys++-parser.cpp" // lalr1.cc:746
 
     /* Initialize the stack.  The initial state will be set in
        yynewstate, since the latter expects the semantical and the
        location values to have been already stored, initialize these
        stacks with a primary value.  */
     yystack_.clear ();
-    yypush_ (YY_NULLPTR, 0, YY_MOVE (yyla));
+    yypush_ (YY_NULLPTR, 0, yyla);
 
     // A new symbol was pushed on the stack.
   yynewstate:
@@ -707,7 +698,7 @@ namespace yy {
       --yyerrstatus_;
 
     // Shift the lookahead token.
-    yypush_ ("Shifting", yyn, YY_MOVE (yyla));
+    yypush_ ("Shifting", yyn, yyla);
     goto yynewstate;
 
   /*-----------------------------------------------------------.
@@ -799,7 +790,7 @@ namespace yy {
       case 83: // funcaoUser
       case 84: // listaparm
       case 85: // illegal
-        yylhs.value.emplace< obj_t > ();
+        yylhs.value.build< obj_t > ();
         break;
 
       default:
@@ -823,397 +814,373 @@ namespace yy {
           switch (yyn)
             {
   case 3:
-#line 132 "Genesys++-parser.yy" // lalr1.cc:906
+#line 132 "Genesys++-parser.yy" // lalr1.cc:870
     {YYACCEPT;}
-#line 829 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 820 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 4:
-#line 133 "Genesys++-parser.yy" // lalr1.cc:906
-    { driver.setResult(yystack_[0].value.as< obj_t > ().valor); driver.getModel()->getTracer()->trace(Util::TraceLevel::mostDetailed, std::string("Resultado"));}
-#line 835 "../Genesys++-parser.cpp" // lalr1.cc:906
-    break;
-
-  case 5:
-#line 134 "Genesys++-parser.yy" // lalr1.cc:906
-    { yylhs.value.as< obj_t > () = yystack_[0].value.as< obj_t > (); }
-#line 841 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 133 "Genesys++-parser.yy" // lalr1.cc:870
+    { driver.setResult(yystack_[0].value.as< obj_t > ().valor);}
+#line 826 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 6:
-#line 135 "Genesys++-parser.yy" // lalr1.cc:906
+#line 135 "Genesys++-parser.yy" // lalr1.cc:870
     { yyerrok; }
-#line 847 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 832 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 7:
-#line 138 "Genesys++-parser.yy" // lalr1.cc:906
+#line 138 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor;}
-#line 853 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 838 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 8:
-#line 141 "Genesys++-parser.yy" // lalr1.cc:906
+#line 141 "Genesys++-parser.yy" // lalr1.cc:870
     {yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor;}
-#line 859 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 844 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 9:
-#line 142 "Genesys++-parser.yy" // lalr1.cc:906
+#line 142 "Genesys++-parser.yy" // lalr1.cc:870
     {yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor;}
-#line 865 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 850 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 10:
-#line 143 "Genesys++-parser.yy" // lalr1.cc:906
+#line 143 "Genesys++-parser.yy" // lalr1.cc:870
     {yylhs.value.as< obj_t > ().valor = yystack_[1].value.as< obj_t > ().valor;}
-#line 871 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 856 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 11:
-#line 144 "Genesys++-parser.yy" // lalr1.cc:906
+#line 144 "Genesys++-parser.yy" // lalr1.cc:870
     {yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor;}
-#line 877 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 862 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 12:
-#line 145 "Genesys++-parser.yy" // lalr1.cc:906
+#line 145 "Genesys++-parser.yy" // lalr1.cc:870
     {yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor;}
-#line 883 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 868 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 13:
-#line 146 "Genesys++-parser.yy" // lalr1.cc:906
+#line 146 "Genesys++-parser.yy" // lalr1.cc:870
     {yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor;}
-#line 889 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 874 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 14:
-#line 147 "Genesys++-parser.yy" // lalr1.cc:906
+#line 147 "Genesys++-parser.yy" // lalr1.cc:870
     {yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor;}
-#line 895 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 880 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 15:
-#line 148 "Genesys++-parser.yy" // lalr1.cc:906
+#line 148 "Genesys++-parser.yy" // lalr1.cc:870
     {yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor;}
-#line 901 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 886 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 16:
-#line 149 "Genesys++-parser.yy" // lalr1.cc:906
+#line 149 "Genesys++-parser.yy" // lalr1.cc:870
     {}
-#line 907 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 892 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 17:
-#line 152 "Genesys++-parser.yy" // lalr1.cc:906
+#line 152 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor;}
-#line 913 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 898 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 18:
-#line 153 "Genesys++-parser.yy" // lalr1.cc:906
+#line 153 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor;}
-#line 919 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 904 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 19:
-#line 156 "Genesys++-parser.yy" // lalr1.cc:906
+#line 156 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[2].value.as< obj_t > ().valor + yystack_[0].value.as< obj_t > ().valor;}
-#line 925 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 910 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 20:
-#line 157 "Genesys++-parser.yy" // lalr1.cc:906
+#line 157 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[2].value.as< obj_t > ().valor - yystack_[0].value.as< obj_t > ().valor;}
-#line 931 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 916 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 21:
-#line 158 "Genesys++-parser.yy" // lalr1.cc:906
+#line 158 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[2].value.as< obj_t > ().valor / yystack_[0].value.as< obj_t > ().valor;}
-#line 937 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 922 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 22:
-#line 159 "Genesys++-parser.yy" // lalr1.cc:906
+#line 159 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[2].value.as< obj_t > ().valor * yystack_[0].value.as< obj_t > ().valor;}
-#line 943 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 928 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 23:
-#line 160 "Genesys++-parser.yy" // lalr1.cc:906
+#line 160 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = -yystack_[0].value.as< obj_t > ().valor;}
-#line 949 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 934 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 24:
-#line 163 "Genesys++-parser.yy" // lalr1.cc:906
+#line 163 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = (int) yystack_[2].value.as< obj_t > ().valor && (int) yystack_[0].value.as< obj_t > ().valor;}
-#line 955 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 940 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 25:
-#line 164 "Genesys++-parser.yy" // lalr1.cc:906
+#line 164 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = (int) yystack_[2].value.as< obj_t > ().valor || (int) yystack_[0].value.as< obj_t > ().valor;}
-#line 961 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 946 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 26:
-#line 165 "Genesys++-parser.yy" // lalr1.cc:906
+#line 165 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[2].value.as< obj_t > ().valor < yystack_[0].value.as< obj_t > ().valor ? 1 : 0;}
-#line 967 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 952 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 27:
-#line 166 "Genesys++-parser.yy" // lalr1.cc:906
+#line 166 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[2].value.as< obj_t > ().valor <= yystack_[0].value.as< obj_t > ().valor ? 1 : 0;}
-#line 973 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 958 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 28:
-#line 167 "Genesys++-parser.yy" // lalr1.cc:906
+#line 167 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[2].value.as< obj_t > ().valor > yystack_[0].value.as< obj_t > ().valor ? 1 : 0;}
-#line 979 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 964 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 29:
-#line 168 "Genesys++-parser.yy" // lalr1.cc:906
+#line 168 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[2].value.as< obj_t > ().valor >= yystack_[0].value.as< obj_t > ().valor ? 1 : 0;}
-#line 985 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 970 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 30:
-#line 169 "Genesys++-parser.yy" // lalr1.cc:906
+#line 169 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[2].value.as< obj_t > ().valor == yystack_[0].value.as< obj_t > ().valor ? 1 : 0;}
-#line 991 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 976 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 31:
-#line 170 "Genesys++-parser.yy" // lalr1.cc:906
+#line 170 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[2].value.as< obj_t > ().valor != yystack_[0].value.as< obj_t > ().valor ? 1 : 0;}
-#line 997 "../Genesys++-parser.cpp" // lalr1.cc:906
-    break;
-
-  case 32:
-#line 173 "Genesys++-parser.yy" // lalr1.cc:906
-    { yylhs.value.as< obj_t > () = yystack_[0].value.as< obj_t > (); }
-#line 1003 "../Genesys++-parser.cpp" // lalr1.cc:906
-    break;
-
-  case 33:
-#line 174 "Genesys++-parser.yy" // lalr1.cc:906
-    { yylhs.value.as< obj_t > () = yystack_[0].value.as< obj_t > (); }
-#line 1009 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 982 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 34:
-#line 177 "Genesys++-parser.yy" // lalr1.cc:906
+#line 177 "Genesys++-parser.yy" // lalr1.cc:870
     {yylhs.value.as< obj_t > ().valor = yystack_[4].value.as< obj_t > ().valor != 0 ? yystack_[2].value.as< obj_t > ().valor : yystack_[0].value.as< obj_t > ().valor;}
-#line 1015 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 988 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 35:
-#line 178 "Genesys++-parser.yy" // lalr1.cc:906
+#line 178 "Genesys++-parser.yy" // lalr1.cc:870
     {yylhs.value.as< obj_t > ().valor = yystack_[2].value.as< obj_t > ().valor != 0 ? yystack_[0].value.as< obj_t > ().valor : 0;}
-#line 1021 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 994 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 36:
-#line 181 "Genesys++-parser.yy" // lalr1.cc:906
-    {yylhs.value.as< obj_t > ().valor = 0; 																							std::cout << "FOR " << yystack_[4].value.as< obj_t > ().valor << " TO " << yystack_[2].value.as< obj_t > ().valor << " DO " << yystack_[0].value.as< obj_t > ().valor << '\n';}
-#line 1027 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 181 "Genesys++-parser.yy" // lalr1.cc:870
+    {yylhs.value.as< obj_t > ().valor = 0; }
+#line 1000 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 37:
-#line 182 "Genesys++-parser.yy" // lalr1.cc:906
-    {yylhs.value.as< obj_t > ().valor = 0; 																							std::cout << "FOR " << yystack_[4].value.as< obj_t > ().valor << " TO " << yystack_[2].value.as< obj_t > ().valor << " DO " << yystack_[0].value.as< obj_t > ().valor << '\n';}
-#line 1033 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 182 "Genesys++-parser.yy" // lalr1.cc:870
+    {yylhs.value.as< obj_t > ().valor = 0; }
+#line 1006 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 38:
-#line 185 "Genesys++-parser.yy" // lalr1.cc:906
+#line 185 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor; }
-#line 1039 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1012 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 39:
-#line 186 "Genesys++-parser.yy" // lalr1.cc:906
+#line 186 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor; }
-#line 1045 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1018 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 40:
-#line 187 "Genesys++-parser.yy" // lalr1.cc:906
-    { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor; std::cout << "Funcao PROB: " << yystack_[0].value.as< obj_t > ().valor << "-----" << yystack_[0].value.as< obj_t > ().tipo << std::endl;}
-#line 1051 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 187 "Genesys++-parser.yy" // lalr1.cc:870
+    { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor; }
+#line 1024 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 41:
-#line 188 "Genesys++-parser.yy" // lalr1.cc:906
+#line 188 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor; }
-#line 1057 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1030 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 42:
-#line 189 "Genesys++-parser.yy" // lalr1.cc:906
+#line 189 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor; }
-#line 1063 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1036 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 43:
-#line 194 "Genesys++-parser.yy" // lalr1.cc:906
+#line 194 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor; }
-#line 1069 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1042 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 44:
-#line 198 "Genesys++-parser.yy" // lalr1.cc:906
+#line 198 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor; }
-#line 1075 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1048 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 45:
-#line 199 "Genesys++-parser.yy" // lalr1.cc:906
+#line 199 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor; }
-#line 1081 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1054 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 46:
-#line 202 "Genesys++-parser.yy" // lalr1.cc:906
+#line 202 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = ((Variable*)(driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Variable>(), yystack_[0].value.as< obj_t > ().id)))->getValue();}
-#line 1087 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1060 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 47:
-#line 203 "Genesys++-parser.yy" // lalr1.cc:906
+#line 203 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = ((Variable*)(driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Variable>(), yystack_[3].value.as< obj_t > ().id)))->getValue(std::to_string(yystack_[1].value.as< obj_t > ().valor));}
-#line 1093 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1066 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 48:
-#line 204 "Genesys++-parser.yy" // lalr1.cc:906
+#line 204 "Genesys++-parser.yy" // lalr1.cc:870
     { std::string index(std::to_string(yystack_[3].value.as< obj_t > ().valor)); index.append(","); index.append(std::to_string(yystack_[1].value.as< obj_t > ().valor)); yylhs.value.as< obj_t > ().valor = ((Variable*)(driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Variable>(), yystack_[5].value.as< obj_t > ().id)))->getValue(index);}
-#line 1099 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1072 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 49:
-#line 208 "Genesys++-parser.yy" // lalr1.cc:906
-    { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor; std::cout << "Formula YY\n";}
-#line 1105 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 208 "Genesys++-parser.yy" // lalr1.cc:870
+    { yylhs.value.as< obj_t > ().valor = yystack_[0].value.as< obj_t > ().valor;}
+#line 1078 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 50:
-#line 211 "Genesys++-parser.yy" // lalr1.cc:906
-    { yylhs.value.as< obj_t > ().valor = sin(yystack_[1].value.as< obj_t > ().valor); /*std::cout << "Sin(" << $3.valor << "):" << $$.valor << '\n';*/}
-#line 1111 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 211 "Genesys++-parser.yy" // lalr1.cc:870
+    { yylhs.value.as< obj_t > ().valor = sin(yystack_[1].value.as< obj_t > ().valor); }
+#line 1084 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 51:
-#line 212 "Genesys++-parser.yy" // lalr1.cc:906
-    { yylhs.value.as< obj_t > ().valor = cos(yystack_[1].value.as< obj_t > ().valor); /*std::cout << "Cos(" << $3.valor << "):" << $$.valor << '\n';*/}
-#line 1117 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 212 "Genesys++-parser.yy" // lalr1.cc:870
+    { yylhs.value.as< obj_t > ().valor = cos(yystack_[1].value.as< obj_t > ().valor); }
+#line 1090 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 52:
-#line 215 "Genesys++-parser.yy" // lalr1.cc:906
+#line 215 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = (int) yystack_[1].value.as< obj_t > ().valor;}
-#line 1123 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1096 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 53:
-#line 216 "Genesys++-parser.yy" // lalr1.cc:906
+#line 216 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[1].value.as< obj_t > ().valor - (int) yystack_[1].value.as< obj_t > ().valor;}
-#line 1129 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1102 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 54:
-#line 217 "Genesys++-parser.yy" // lalr1.cc:906
+#line 217 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = (int) yystack_[1].value.as< obj_t > ().valor;}
-#line 1135 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1108 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 55:
-#line 218 "Genesys++-parser.yy" // lalr1.cc:906
+#line 218 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = (int) yystack_[3].value.as< obj_t > ().valor % (int) yystack_[1].value.as< obj_t > ().valor; }
-#line 1141 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1114 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 56:
-#line 221 "Genesys++-parser.yy" // lalr1.cc:906
+#line 221 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = driver.getProbs()->sampleExponential(yystack_[1].value.as< obj_t > ().valor); yylhs.value.as< obj_t > ().tipo = "Exponencial";}
-#line 1147 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1120 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 57:
-#line 222 "Genesys++-parser.yy" // lalr1.cc:906
-    { yylhs.value.as< obj_t > ().valor = driver.getProbs()->sampleNormal(yystack_[3].value.as< obj_t > ().valor,yystack_[1].value.as< obj_t > ().valor); yylhs.value.as< obj_t > ().tipo = "Normal"; std::cout << "NORMAL YY\n";}
-#line 1153 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 222 "Genesys++-parser.yy" // lalr1.cc:870
+    { yylhs.value.as< obj_t > ().valor = driver.getProbs()->sampleNormal(yystack_[3].value.as< obj_t > ().valor,yystack_[1].value.as< obj_t > ().valor); yylhs.value.as< obj_t > ().tipo = "Normal"; }
+#line 1126 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 58:
-#line 223 "Genesys++-parser.yy" // lalr1.cc:906
+#line 223 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = driver.getProbs()->sampleUniform(yystack_[3].value.as< obj_t > ().valor,yystack_[1].value.as< obj_t > ().valor); yylhs.value.as< obj_t > ().tipo = "Unificada"; }
-#line 1159 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1132 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 59:
-#line 224 "Genesys++-parser.yy" // lalr1.cc:906
+#line 224 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = driver.getProbs()->sampleWeibull(yystack_[3].value.as< obj_t > ().valor,yystack_[1].value.as< obj_t > ().valor); yylhs.value.as< obj_t > ().tipo = "Weibull"; }
-#line 1165 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1138 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 60:
-#line 225 "Genesys++-parser.yy" // lalr1.cc:906
+#line 225 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = driver.getProbs()->sampleLogNormal(yystack_[3].value.as< obj_t > ().valor,yystack_[1].value.as< obj_t > ().valor); yylhs.value.as< obj_t > ().tipo = "LOGNormal"; }
-#line 1171 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1144 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 61:
-#line 226 "Genesys++-parser.yy" // lalr1.cc:906
+#line 226 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = driver.getProbs()->sampleGamma(yystack_[3].value.as< obj_t > ().valor,yystack_[1].value.as< obj_t > ().valor); yylhs.value.as< obj_t > ().tipo = "Gamma"; }
-#line 1177 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1150 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 62:
-#line 227 "Genesys++-parser.yy" // lalr1.cc:906
+#line 227 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = driver.getProbs()->sampleErlang(yystack_[3].value.as< obj_t > ().valor,yystack_[1].value.as< obj_t > ().valor); yylhs.value.as< obj_t > ().tipo = "Erlang"; }
-#line 1183 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1156 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 63:
-#line 228 "Genesys++-parser.yy" // lalr1.cc:906
+#line 228 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = driver.getProbs()->sampleTriangular(yystack_[5].value.as< obj_t > ().valor,yystack_[3].value.as< obj_t > ().valor,yystack_[1].value.as< obj_t > ().valor); yylhs.value.as< obj_t > ().tipo = "Triangular"; }
-#line 1189 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1162 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 64:
-#line 229 "Genesys++-parser.yy" // lalr1.cc:906
+#line 229 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = driver.getProbs()->sampleBeta(yystack_[7].value.as< obj_t > ().valor,yystack_[5].value.as< obj_t > ().valor,yystack_[3].value.as< obj_t > ().valor,yystack_[1].value.as< obj_t > ().valor); yylhs.value.as< obj_t > ().tipo = "Beta"; }
-#line 1195 "../Genesys++-parser.cpp" // lalr1.cc:906
-    break;
-
-  case 65:
-#line 230 "Genesys++-parser.yy" // lalr1.cc:906
-    { yylhs.value.as< obj_t > () = yystack_[3].value.as< obj_t > (); }
-#line 1201 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1168 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 66:
-#line 233 "Genesys++-parser.yy" // lalr1.cc:906
+#line 233 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = ((Queue*)(driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Queue>(), yystack_[1].value.as< obj_t > ().id)))->size();}
-#line 1207 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1174 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 67:
-#line 234 "Genesys++-parser.yy" // lalr1.cc:906
+#line 234 "Genesys++-parser.yy" // lalr1.cc:870
     {/*For now does nothing because need acces to list of QUEUE, or at least the last element*/ }
-#line 1213 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1180 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 68:
-#line 235 "Genesys++-parser.yy" // lalr1.cc:906
+#line 235 "Genesys++-parser.yy" // lalr1.cc:870
     { if (((Queue*)(driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Queue>(), yystack_[1].value.as< obj_t > ().id)))->size() > 0){
                                                                     //id da 1a entidade da fila, talvez pegar nome
                                                                     yylhs.value.as< obj_t > ().valor = ((Queue*)(driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Queue>(), yystack_[1].value.as< obj_t > ().id)))->first()->getEntity()->getId();
@@ -1221,29 +1188,29 @@ namespace yy {
                                                                     yylhs.value.as< obj_t > ().valor = 0;
                                                                   }
                                                                 }
-#line 1225 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1192 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 69:
-#line 242 "Genesys++-parser.yy" // lalr1.cc:906
+#line 242 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = ((Resource*)driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Resource>(), yystack_[1].value.as< obj_t > ().id))->getCapacity();}
-#line 1231 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1198 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 70:
-#line 243 "Genesys++-parser.yy" // lalr1.cc:906
+#line 243 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = ((Resource*)driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Resource>(), yystack_[1].value.as< obj_t > ().id))->getNumberBusy();}
-#line 1237 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1204 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 71:
-#line 244 "Genesys++-parser.yy" // lalr1.cc:906
+#line 244 "Genesys++-parser.yy" // lalr1.cc:870
     { /*For now does nothing because needs get Seizes, check with teacher*/}
-#line 1243 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1210 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 72:
-#line 245 "Genesys++-parser.yy" // lalr1.cc:906
+#line 245 "Genesys++-parser.yy" // lalr1.cc:870
     {  switch(((Resource*)driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Resource>(), yystack_[1].value.as< obj_t > ().id))->getResourceState()){
                                                                     case Resource::ResourceState::IDLE:
                                                                       yylhs.value.as< obj_t > ().valor = -1;
@@ -1261,47 +1228,35 @@ namespace yy {
                                                                       break;
                                                                   }
                                                                 }
-#line 1265 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1232 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 73:
-#line 263 "Genesys++-parser.yy" // lalr1.cc:906
+#line 263 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = ((Resource*)driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Resource>(), yystack_[1].value.as< obj_t > ().id))->getResourceState() == Resource::ResourceState::FAILED ? 1 : 0; }
-#line 1271 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1238 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 74:
-#line 264 "Genesys++-parser.yy" // lalr1.cc:906
+#line 264 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = driver.getModel()->getSimulation()->getSimulatedTime();}
-#line 1277 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1244 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 75:
-#line 265 "Genesys++-parser.yy" // lalr1.cc:906
+#line 265 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = driver.getModel()->getInfos()->getReplicationLength();}
-#line 1283 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1250 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 76:
-#line 269 "Genesys++-parser.yy" // lalr1.cc:906
+#line 269 "Genesys++-parser.yy" // lalr1.cc:870
     { yylhs.value.as< obj_t > ().valor = yystack_[1].value.as< obj_t > ().valor; }
-#line 1289 "../Genesys++-parser.cpp" // lalr1.cc:906
-    break;
-
-  case 77:
-#line 273 "Genesys++-parser.yy" // lalr1.cc:906
-    { yylhs.value.as< obj_t > () = yystack_[4].value.as< obj_t > (); }
-#line 1295 "../Genesys++-parser.cpp" // lalr1.cc:906
-    break;
-
-  case 78:
-#line 274 "Genesys++-parser.yy" // lalr1.cc:906
-    { yylhs.value.as< obj_t > () = yystack_[2].value.as< obj_t > (); }
-#line 1301 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1256 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
   case 79:
-#line 277 "Genesys++-parser.yy" // lalr1.cc:906
+#line 277 "Genesys++-parser.yy" // lalr1.cc:870
     {
                                                                   driver.setResult(-1);
                                                                   if(driver.getThrowsException()){
@@ -1318,11 +1273,11 @@ namespace yy {
                                                                     }
                                                                   }
                                                                 }
-#line 1322 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1277 "../Genesys++-parser.cpp" // lalr1.cc:870
     break;
 
 
-#line 1326 "../Genesys++-parser.cpp" // lalr1.cc:906
+#line 1281 "../Genesys++-parser.cpp" // lalr1.cc:870
             default:
               break;
             }
@@ -1340,7 +1295,7 @@ namespace yy {
       YY_STACK_PRINT ();
 
       // Shift the result of the reduction.
-      yypush_ (YY_NULLPTR, YY_MOVE (yylhs));
+      yypush_ (YY_NULLPTR, yylhs);
     }
     goto yynewstate;
 
@@ -1428,7 +1383,7 @@ namespace yy {
 
       // Shift the error token.
       error_token.state = yyn;
-      yypush_ ("Shifting", YY_MOVE (error_token));
+      yypush_ ("Shifting", error_token);
     }
     goto yynewstate;
 
@@ -1983,8 +1938,8 @@ namespace yy {
 
 
 } // yy
-#line 1987 "../Genesys++-parser.cpp" // lalr1.cc:1217
-#line 295 "Genesys++-parser.yy" // lalr1.cc:1218
+#line 1942 "../Genesys++-parser.cpp" // lalr1.cc:1181
+#line 295 "Genesys++-parser.yy" // lalr1.cc:1182
 
 void
 yy::genesyspp_parser::error (const location_type& l,

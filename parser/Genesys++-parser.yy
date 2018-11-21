@@ -130,7 +130,7 @@ class genesyspp_driver;
 
 input	    : /* empty */
            | input '\n' {YYACCEPT;}
-           | input programa                                     { driver.setResult($2.valor); driver.getModel()->getTracer()->trace(Util::TraceLevel::mostDetailed, std::string("Resultado:" + $2.valor));}
+           | input programa                                     { driver.setResult($2.valor);}
            | illegal
            | error '\n'                                         { yyerrok; }
            ;
@@ -178,13 +178,13 @@ comandoIF   : cIF "(" expressao ")" expressao cELSE expressao   {$$.valor = $3.v
             | cIF "(" expressao ")" expressao                   {$$.valor = $3.valor != 0 ? $5.valor : 0;}
             ;
 //Check for function/need, for now will let cout
-comandoFOR  : cFOR variavel "=" expressao cTO expressao cDO atribuicao  {$$.valor = 0; 																							std::cout << "FOR " << $4.valor << " TO " << $6.valor << " DO " << $8.valor << '\n';}
-            | cFOR atributo "=" expressao cTO expressao cDO atribuicao  {$$.valor = 0; 																							std::cout << "FOR " << $4.valor << " TO " << $6.valor << " DO " << $8.valor << '\n';}
+comandoFOR  : cFOR variavel "=" expressao cTO expressao cDO atribuicao  {$$.valor = 0; }
+            | cFOR atributo "=" expressao cTO expressao cDO atribuicao  {$$.valor = 0; }
             ;
 
 funcao      : funcaoArit                                        { $$.valor = $1.valor; }
             | funcaoTrig                                        { $$.valor = $1.valor; }
-            | funcaoProb                                        { $$.valor = $1.valor; std::cout << "Funcao PROB: " << $1.valor << "-----" << $1.tipo << std::endl;}
+            | funcaoProb                                        { $$.valor = $1.valor; }
             | funcaoStrc                                        { $$.valor = $1.valor; }
             | funcaoUser                                        { $$.valor = $1.valor; }
             ;
@@ -205,11 +205,11 @@ variavel    : VARI                                              { $$.valor = ((V
             ;
 
 //Formula not implemented, so will just receive a number
-formula     : NUMD                                             { $$.valor = $1.valor; std::cout << "Formula YY\n";} //Formula not implemented on GenESyS
+formula     : NUMD                                             { $$.valor = $1.valor;} //Formula not implemented on GenESyS
             ;
 
-funcaoTrig  : fSIN   "(" expressao ")"                          { $$.valor = sin($3.valor); /*std::cout << "Sin(" << $3.valor << "):" << $$.valor << '\n';*/}
-            | fCOS   "(" expressao ")"                          { $$.valor = cos($3.valor); /*std::cout << "Cos(" << $3.valor << "):" << $$.valor << '\n';*/}
+funcaoTrig  : fSIN   "(" expressao ")"                          { $$.valor = sin($3.valor); }
+            | fCOS   "(" expressao ")"                          { $$.valor = cos($3.valor); }
             ;
 
 funcaoArit  : fAINT  "(" expressao ")"                          { $$.valor = (int) $3.valor;}
@@ -219,7 +219,7 @@ funcaoArit  : fAINT  "(" expressao ")"                          { $$.valor = (in
             ;
 
 funcaoProb  : fEXPO  "(" expressao ")"                                            { $$.valor = driver.getProbs()->sampleExponential($3.valor); $$.tipo = "Exponencial";}
-            | fNORM  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs()->sampleNormal($3.valor,$5.valor); $$.tipo = "Normal"; std::cout << "NORMAL YY\n";}
+            | fNORM  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs()->sampleNormal($3.valor,$5.valor); $$.tipo = "Normal"; }
             | fUNIF  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs()->sampleUniform($3.valor,$5.valor); $$.tipo = "Unificada"; }
             | fWEIB  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs()->sampleWeibull($3.valor,$5.valor); $$.tipo = "Weibull"; }
             | fLOGN  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs()->sampleLogNormal($3.valor,$5.valor); $$.tipo = "LOGNormal"; }

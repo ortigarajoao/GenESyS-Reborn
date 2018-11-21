@@ -1,4 +1,4 @@
-// A Bison parser, made by GNU Bison 3.2.
+// A Bison parser, made by GNU Bison 3.1.
 
 // Skeleton interface for Bison LALR(1) parsers in C++
 
@@ -30,7 +30,6 @@
 // This special exception was added by the Free Software Foundation in
 // version 2.2 of Bison.
 
-
 /**
  ** \file ../Genesys++-parser.h
  ** Define the yy::parser class.
@@ -38,13 +37,10 @@
 
 // C++ LALR(1) parser skeleton written by Akim Demaille.
 
-// Undocumented macros, especially those whose name start with YY_,
-// are private implementation details.  Do not rely on them.
-
 #ifndef YY_YY_GENESYS_PARSER_H_INCLUDED
 # define YY_YY_GENESYS_PARSER_H_INCLUDED
 // //                    "%code requires" blocks.
-#line 9 "Genesys++-parser.yy" // lalr1.cc:403
+#line 9 "Genesys++-parser.yy" // lalr1.cc:380
 
 #include <string>
 #include <cmath>
@@ -56,7 +52,7 @@
 class genesyspp_driver;
 
 
-#line 60 "../Genesys++-parser.h" // lalr1.cc:403
+#line 56 "../Genesys++-parser.h" // lalr1.cc:380
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -64,21 +60,7 @@ class genesyspp_driver;
 # include <stdexcept>
 # include <string>
 # include <vector>
-
-// Support move semantics when possible.
-#if defined __cplusplus && 201103L <= __cplusplus
-# define YY_MOVE           std::move
-# define YY_MOVE_OR_COPY   move
-# define YY_MOVE_REF(Type) Type&&
-# define YY_RVREF(Type)    Type&&
-# define YY_COPY(Type)     Type
-#else
-# define YY_MOVE
-# define YY_MOVE_OR_COPY   copy
-# define YY_MOVE_REF(Type) Type&
-# define YY_RVREF(Type)    const Type&
-# define YY_COPY(Type)     const Type&
-#endif
+# include "stack.hh"
 # include "location.hh"
 #include <typeinfo>
 #ifndef YYASSERT
@@ -103,6 +85,15 @@ class genesyspp_driver;
 
 #ifndef YY_ATTRIBUTE_UNUSED
 # define YY_ATTRIBUTE_UNUSED YY_ATTRIBUTE ((__unused__))
+#endif
+
+#if !defined _Noreturn \
+     && (!defined __STDC_VERSION__ || __STDC_VERSION__ < 201112)
+# if defined _MSC_VER && 1200 <= _MSC_VER
+#  define _Noreturn __declspec (noreturn)
+# else
+#  define _Noreturn YY_ATTRIBUTE ((__noreturn__))
+# endif
 #endif
 
 /* Suppress unused-variable warnings by "using" E.  */
@@ -132,17 +123,12 @@ class genesyspp_driver;
 #endif
 
 # ifndef YY_NULLPTR
-#  if defined __cplusplus
-#   if 201103L <= __cplusplus
-#    define YY_NULLPTR nullptr
-#   else
-#    define YY_NULLPTR 0
-#   endif
+#  if defined __cplusplus && 201103L <= __cplusplus
+#   define YY_NULLPTR nullptr
 #  else
-#   define YY_NULLPTR ((void*)0)
+#   define YY_NULLPTR 0
 #  endif
 # endif
-
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -150,126 +136,7 @@ class genesyspp_driver;
 
 
 namespace yy {
-#line 154 "../Genesys++-parser.h" // lalr1.cc:403
-
-  /// A stack with random access from its top.
-  template <typename T, typename S = std::vector<T> >
-  class stack
-  {
-  public:
-    // Hide our reversed order.
-    typedef typename S::reverse_iterator iterator;
-    typedef typename S::const_reverse_iterator const_iterator;
-    typedef typename S::size_type size_type;
-
-    stack (size_type n = 200)
-      : seq_ (n)
-    {}
-
-    /// Random access.
-    ///
-    /// Index 0 returns the topmost element.
-    T&
-    operator[] (size_type i)
-    {
-      return seq_[size () - 1 - i];
-    }
-
-    /// Random access.
-    ///
-    /// Index 0 returns the topmost element.
-    T&
-    operator[] (int i)
-    {
-      return operator[] (size_type (i));
-    }
-
-    /// Random access.
-    ///
-    /// Index 0 returns the topmost element.
-    const T&
-    operator[] (size_type i) const
-    {
-      return seq_[size () - 1 - i];
-    }
-
-    /// Random access.
-    ///
-    /// Index 0 returns the topmost element.
-    const T&
-    operator[] (int i) const
-    {
-      return operator[] (size_type (i));
-    }
-
-    /// Steal the contents of \a t.
-    ///
-    /// Close to move-semantics.
-    void
-    push (YY_MOVE_REF (T) t)
-    {
-      seq_.push_back (T ());
-      operator[](0).move (t);
-    }
-
-    void
-    pop (int n = 1)
-    {
-      for (; 0 < n; --n)
-        seq_.pop_back ();
-    }
-
-    void
-    clear ()
-    {
-      seq_.clear ();
-    }
-
-    size_type
-    size () const
-    {
-      return seq_.size ();
-    }
-
-    const_iterator
-    begin () const
-    {
-      return seq_.rbegin ();
-    }
-
-    const_iterator
-    end () const
-    {
-      return seq_.rend ();
-    }
-
-  private:
-    stack (const stack&);
-    stack& operator= (const stack&);
-    /// The wrapped container.
-    S seq_;
-  };
-
-  /// Present a slice of the top of a stack.
-  template <typename T, typename S = stack<T> >
-  class slice
-  {
-  public:
-    slice (const S& stack, int range)
-      : stack_ (stack)
-      , range_ (range)
-    {}
-
-    const T&
-    operator[] (int i) const
-    {
-      return stack_[range_ - i];
-    }
-
-  private:
-    const S& stack_;
-    int range_;
-  };
+#line 140 "../Genesys++-parser.h" // lalr1.cc:380
 
 
 
@@ -292,11 +159,11 @@ namespace yy {
 
     /// Construct and fill.
     template <typename T>
-    variant (YY_RVREF (T) t)
+    variant (const T& t)
       : yytypeid_ (&typeid (T))
     {
       YYASSERT (sizeof (T) <= S);
-      new (yyas_<T> ()) T (YY_MOVE (t));
+      new (yyas_<T> ()) T (t);
     }
 
     /// Destruction, allowed only if empty.
@@ -308,7 +175,7 @@ namespace yy {
     /// Instantiate an empty \a T in here.
     template <typename T>
     T&
-    emplace ()
+    build ()
     {
       YYASSERT (!yytypeid_);
       YYASSERT (sizeof (T) <= S);
@@ -316,46 +183,15 @@ namespace yy {
       return *new (yyas_<T> ()) T ();
     }
 
-# if defined __cplusplus && 201103L <= __cplusplus
-    /// Instantiate a \a T in here from \a t.
-    template <typename T, typename U>
-    T&
-    emplace (U&& u)
-    {
-      YYASSERT (!yytypeid_);
-      YYASSERT (sizeof (T) <= S);
-      yytypeid_ = & typeid (T);
-      return *new (yyas_<T> ()) T (std::forward <U>(u));
-    }
-# else
     /// Instantiate a \a T in here from \a t.
     template <typename T>
     T&
-    emplace (const T& t)
+    build (const T& t)
     {
       YYASSERT (!yytypeid_);
       YYASSERT (sizeof (T) <= S);
       yytypeid_ = & typeid (T);
       return *new (yyas_<T> ()) T (t);
-    }
-# endif
-
-    /// Instantiate an empty \a T in here.
-    /// Obsolete, use emplace.
-    template <typename T>
-    T&
-    build ()
-    {
-      return emplace<T> ();
-    }
-
-    /// Instantiate a \a T in here from \a t.
-    /// Obsolete, use emplace.
-    template <typename T>
-    T&
-    build (const T& t)
-    {
-      return emplace<T> (t);
     }
 
     /// Accessor to a built \a T.
@@ -385,7 +221,7 @@ namespace yy {
     /// Both variants must be built beforehand, because swapping the actual
     /// data requires reading it (with as()), and this is not possible on
     /// unconstructed variants: it would require some dynamic testing, which
-    /// should not be the variant's responsibility.
+    /// should not be the variant's responsability.
     /// Swapping between built and (possibly) non-built is done with
     /// variant::move ().
     template <typename T>
@@ -404,32 +240,17 @@ namespace yy {
     void
     move (self_type& other)
     {
-# if defined __cplusplus && 201103L <= __cplusplus
-      emplace<T> (std::move (other.as<T> ()));
-# else
-      emplace<T> ();
+      build<T> ();
       swap<T> (other);
-# endif
       other.destroy<T> ();
     }
-
-# if defined __cplusplus && 201103L <= __cplusplus
-    /// Move the content of \a other to this.
-    template <typename T>
-    void
-    move (self_type&& other)
-    {
-      emplace<T> (std::move (other.as<T> ()));
-      other.destroy<T> ();
-    }
-#endif
 
     /// Copy the content of \a other to this.
     template <typename T>
     void
     copy (const self_type& other)
     {
-      emplace<T> (other.as<T> ());
+      build<T> (other.as<T> ());
     }
 
     /// Destroy the stored \a T.
@@ -443,7 +264,7 @@ namespace yy {
 
   private:
     /// Prohibit blind copies.
-    self_type& operator= (const self_type&);
+    self_type& operator=(const self_type&);
     variant (const self_type&);
 
     /// Accessor to raw memory as \a T.
@@ -552,11 +373,11 @@ namespace yy {
       // funcaoUser
       // listaparm
       // illegal
-      char dummy1[sizeof (obj_t)];
+      char dummy1[sizeof(obj_t)];
 };
 
     /// Symbol semantic values.
-    typedef variant<sizeof (union_type)> semantic_type;
+    typedef variant<sizeof(union_type)> semantic_type;
 #else
     typedef YYSTYPE semantic_type;
 #endif
@@ -651,7 +472,7 @@ namespace yy {
     /// A complete symbol.
     ///
     /// Expects its Base type to provide access to the symbol type
-    /// via type_get ().
+    /// via type_get().
     ///
     /// Provide access to semantic value and location.
     template <typename Base>
@@ -663,14 +484,20 @@ namespace yy {
       /// Default constructor.
       basic_symbol ();
 
-      /// Move or copy constructor.
-      basic_symbol (YY_RVREF (basic_symbol) other);
-
+      /// Copy constructor.
+      basic_symbol (const basic_symbol& other);
 
       /// Constructor for valueless symbols, and symbols from each type.
-      basic_symbol (typename Base::kind_type t, YY_RVREF (location_type) l);
-      basic_symbol (typename Base::kind_type t, YY_RVREF (obj_t) v, YY_RVREF (location_type) l);
 
+  basic_symbol (typename Base::kind_type t, const location_type& l);
+
+  basic_symbol (typename Base::kind_type t, const obj_t& v, const location_type& l);
+
+
+      /// Constructor for symbols with semantic value.
+      basic_symbol (typename Base::kind_type t,
+                    const semantic_type& v,
+                    const location_type& l);
 
       /// Destroy the symbol.
       ~basic_symbol ();
@@ -691,10 +518,8 @@ namespace yy {
       location_type location;
 
     private:
-#if defined __cplusplus && __cplusplus < 201103L
       /// Assignment operator.
       basic_symbol& operator= (const basic_symbol& other);
-#endif
     };
 
     /// Type access provider for token (enum) based symbols.
@@ -734,13 +559,243 @@ namespace yy {
     /// "External" symbols: returned by the scanner.
     typedef basic_symbol<by_type> symbol_type;
 
+    // Symbol constructors declarations.
+    static inline
+    symbol_type
+    make_END (const location_type& l);
+
+    static inline
+    symbol_type
+    make_NUMD (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_NUMH (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_ATRIB (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_VARI (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_FORM (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_QUEUE (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_RES (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_oLE (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_oGE (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_oEQ (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_oNE (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_oAND (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_oOR (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_oNOT (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fSIN (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fCOS (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fAINT (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fMOD (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fINT (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fFRAC (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fEXPO (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fNORM (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fUNIF (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fWEIB (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fLOGN (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fGAMM (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fERLA (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fTRIA (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fBETA (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fDISC (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fTNOW (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fTFIN (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fNR (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fMR (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fIRF (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fRESSEIZES (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fSTATE (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fNQ (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fFIRSTINQ (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_fLASTINQ (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_cIF (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_cELSE (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_cFOR (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_cTO (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_cDO (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_ILLEGAL (const obj_t& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_LPAREN (const location_type& l);
+
+    static inline
+    symbol_type
+    make_RPAREN (const location_type& l);
+
+    static inline
+    symbol_type
+    make_PLUS (const location_type& l);
+
+    static inline
+    symbol_type
+    make_MINUS (const location_type& l);
+
+    static inline
+    symbol_type
+    make_STAR (const location_type& l);
+
+    static inline
+    symbol_type
+    make_SLASH (const location_type& l);
+
+    static inline
+    symbol_type
+    make_LESS (const location_type& l);
+
+    static inline
+    symbol_type
+    make_GREATER (const location_type& l);
+
+    static inline
+    symbol_type
+    make_ASSIGN (const location_type& l);
+
+    static inline
+    symbol_type
+    make_COMMA (const location_type& l);
+
+    static inline
+    symbol_type
+    make_NEG (const location_type& l);
+
+
     /// Build a parser object.
     genesyspp_parser (genesyspp_driver& driver_yyarg);
     virtual ~genesyspp_parser ();
-
-    /// Parse.  An alias for parse ().
-    /// \returns  0 iff parsing succeeded.
-    int operator() ();
 
     /// Parse.
     /// \returns  0 iff parsing succeeded.
@@ -767,241 +822,6 @@ namespace yy {
 
     /// Report a syntax error.
     void error (const syntax_error& err);
-
-    // Symbol constructors declarations.
-    static
-    symbol_type
-    make_END (YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_NUMD (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_NUMH (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_ATRIB (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_VARI (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_FORM (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_QUEUE (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_RES (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_oLE (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_oGE (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_oEQ (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_oNE (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_oAND (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_oOR (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_oNOT (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fSIN (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fCOS (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fAINT (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fMOD (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fINT (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fFRAC (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fEXPO (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fNORM (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fUNIF (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fWEIB (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fLOGN (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fGAMM (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fERLA (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fTRIA (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fBETA (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fDISC (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fTNOW (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fTFIN (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fNR (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fMR (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fIRF (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fRESSEIZES (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fSTATE (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fNQ (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fFIRSTINQ (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_fLASTINQ (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_cIF (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_cELSE (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_cFOR (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_cTO (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_cDO (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_ILLEGAL (YY_COPY (obj_t) v, YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_LPAREN (YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_RPAREN (YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_PLUS (YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_MINUS (YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_STAR (YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_SLASH (YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_LESS (YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_GREATER (YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_ASSIGN (YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_COMMA (YY_COPY (location_type) l);
-
-    static
-    symbol_type
-    make_NEG (YY_COPY (location_type) l);
-
-
 
   private:
     /// This class is not copyable.
@@ -1143,15 +963,12 @@ namespace yy {
       typedef basic_symbol<by_state> super_type;
       /// Construct an empty symbol.
       stack_symbol_type ();
-      /// Move or copy construction.
-      stack_symbol_type (YY_RVREF (stack_symbol_type) that);
+      /// Copy construct (for efficiency).
+      stack_symbol_type (const stack_symbol_type& that);
       /// Steal the contents from \a sym to build this.
-      stack_symbol_type (state_type s, YY_MOVE_REF (symbol_type) sym);
-#if defined __cplusplus && __cplusplus < 201103L
-      /// Assignment, needed by push_back by some old implementations.
-      /// Moves the contents of that.
-      stack_symbol_type& operator= (stack_symbol_type& that);
-#endif
+      stack_symbol_type (state_type s, symbol_type& sym);
+      /// Assignment, needed by push_back.
+      stack_symbol_type& operator= (const stack_symbol_type& that);
     };
 
     /// Stack type.
@@ -1163,20 +980,20 @@ namespace yy {
     /// Push a new state on the stack.
     /// \param m    a debug message to display
     ///             if null, no trace is output.
-    /// \param sym  the symbol
+    /// \param s    the symbol
     /// \warning the contents of \a s.value is stolen.
-    void yypush_ (const char* m, YY_MOVE_REF (stack_symbol_type) sym);
+    void yypush_ (const char* m, stack_symbol_type& s);
 
     /// Push a new look ahead token on the state on the stack.
     /// \param m    a debug message to display
     ///             if null, no trace is output.
     /// \param s    the state
     /// \param sym  the symbol (for its value and location).
-    /// \warning the contents of \a sym.value is stolen.
-    void yypush_ (const char* m, state_type s, YY_MOVE_REF (symbol_type) sym);
+    /// \warning the contents of \a s.value is stolen.
+    void yypush_ (const char* m, state_type s, symbol_type& sym);
 
-    /// Pop \a n symbols from the stack.
-    void yypop_ (int n = 1);
+    /// Pop \a n symbols the three stacks.
+    void yypop_ (unsigned n = 1);
 
     /// Constants.
     enum
@@ -1262,10 +1079,10 @@ namespace yy {
   {}
 
   template <typename Base>
-  genesyspp_parser::basic_symbol<Base>::basic_symbol (YY_RVREF (basic_symbol) other)
-    : Base (YY_MOVE (other))
+  genesyspp_parser::basic_symbol<Base>::basic_symbol (const basic_symbol& other)
+    : Base (other)
     , value ()
-    , location (YY_MOVE (other.location))
+    , location (other.location)
   {
     switch (other.type_get ())
     {
@@ -1336,7 +1153,7 @@ namespace yy {
       case 83: // funcaoUser
       case 84: // listaparm
       case 85: // illegal
-        value.YY_MOVE_OR_COPY< obj_t > (YY_MOVE (other.value));
+        value.copy< obj_t > (other.value);
         break;
 
       default:
@@ -1345,21 +1162,105 @@ namespace yy {
 
   }
 
+  template <typename Base>
+  genesyspp_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const semantic_type& v, const location_type& l)
+    : Base (t)
+    , value ()
+    , location (l)
+  {
+    (void) v;
+    switch (this->type_get ())
+    {
+      case 3: // NUMD
+      case 4: // NUMH
+      case 5: // ATRIB
+      case 6: // VARI
+      case 7: // FORM
+      case 8: // QUEUE
+      case 9: // RES
+      case 10: // oLE
+      case 11: // oGE
+      case 12: // oEQ
+      case 13: // oNE
+      case 14: // oAND
+      case 15: // oOR
+      case 16: // oNOT
+      case 17: // fSIN
+      case 18: // fCOS
+      case 19: // fAINT
+      case 20: // fMOD
+      case 21: // fINT
+      case 22: // fFRAC
+      case 23: // fEXPO
+      case 24: // fNORM
+      case 25: // fUNIF
+      case 26: // fWEIB
+      case 27: // fLOGN
+      case 28: // fGAMM
+      case 29: // fERLA
+      case 30: // fTRIA
+      case 31: // fBETA
+      case 32: // fDISC
+      case 33: // fTNOW
+      case 34: // fTFIN
+      case 35: // fNR
+      case 36: // fMR
+      case 37: // fIRF
+      case 38: // fRESSEIZES
+      case 39: // fSTATE
+      case 40: // fNQ
+      case 41: // fFIRSTINQ
+      case 42: // fLASTINQ
+      case 43: // cIF
+      case 44: // cELSE
+      case 45: // cFOR
+      case 46: // cTO
+      case 47: // cDO
+      case 48: // ILLEGAL
+      case 65: // input
+      case 66: // programa
+      case 67: // expressao
+      case 68: // numero
+      case 69: // aritmetica
+      case 70: // relacional
+      case 71: // comando
+      case 72: // comandoIF
+      case 73: // comandoFOR
+      case 74: // funcao
+      case 75: // atributo
+      case 76: // atribuicao
+      case 77: // variavel
+      case 78: // formula
+      case 79: // funcaoTrig
+      case 80: // funcaoArit
+      case 81: // funcaoProb
+      case 82: // funcaoStrc
+      case 83: // funcaoUser
+      case 84: // listaparm
+      case 85: // illegal
+        value.copy< obj_t > (v);
+        break;
+
+      default:
+        break;
+    }
+}
+
 
   // Implementation of basic_symbol constructor for each type.
+
   template <typename Base>
-  genesyspp_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, YY_RVREF (location_type) l)
+  genesyspp_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const location_type& l)
     : Base (t)
-    , location (YY_MOVE (l))
+    , location (l)
   {}
 
   template <typename Base>
-  genesyspp_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, YY_RVREF (obj_t) v, YY_RVREF (location_type) l)
+  genesyspp_parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const obj_t& v, const location_type& l)
     : Base (t)
-    , value (YY_MOVE (v))
-    , location (YY_MOVE (l))
+    , value (v)
+    , location (l)
   {}
-
 
 
   template <typename Base>
@@ -1543,14 +1444,14 @@ namespace yy {
       case 83: // funcaoUser
       case 84: // listaparm
       case 85: // illegal
-        value.move< obj_t > (YY_MOVE (s.value));
+        value.move< obj_t > (s.value);
         break;
 
       default:
         break;
     }
 
-    location = YY_MOVE (s.location);
+    location = s.location;
   }
 
   // by_type.
@@ -1611,418 +1512,359 @@ namespace yy {
     };
     return static_cast<token_type> (yytoken_number_[type]);
   }
-
   // Implementation of make_symbol for each symbol type.
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_END (YY_COPY (location_type) l)
+  genesyspp_parser::make_END (const location_type& l)
   {
-    return symbol_type (token::END, YY_MOVE (l));
+    return symbol_type (token::END, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_NUMD (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_NUMD (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::NUMD, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::NUMD, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_NUMH (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_NUMH (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::NUMH, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::NUMH, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_ATRIB (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_ATRIB (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::ATRIB, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::ATRIB, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_VARI (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_VARI (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::VARI, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::VARI, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_FORM (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_FORM (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::FORM, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::FORM, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_QUEUE (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_QUEUE (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::QUEUE, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::QUEUE, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_RES (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_RES (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::RES, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::RES, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_oLE (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_oLE (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::oLE, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::oLE, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_oGE (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_oGE (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::oGE, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::oGE, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_oEQ (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_oEQ (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::oEQ, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::oEQ, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_oNE (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_oNE (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::oNE, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::oNE, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_oAND (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_oAND (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::oAND, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::oAND, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_oOR (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_oOR (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::oOR, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::oOR, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_oNOT (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_oNOT (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::oNOT, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::oNOT, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fSIN (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fSIN (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fSIN, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fSIN, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fCOS (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fCOS (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fCOS, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fCOS, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fAINT (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fAINT (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fAINT, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fAINT, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fMOD (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fMOD (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fMOD, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fMOD, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fINT (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fINT (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fINT, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fINT, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fFRAC (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fFRAC (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fFRAC, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fFRAC, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fEXPO (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fEXPO (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fEXPO, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fEXPO, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fNORM (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fNORM (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fNORM, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fNORM, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fUNIF (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fUNIF (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fUNIF, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fUNIF, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fWEIB (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fWEIB (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fWEIB, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fWEIB, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fLOGN (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fLOGN (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fLOGN, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fLOGN, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fGAMM (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fGAMM (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fGAMM, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fGAMM, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fERLA (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fERLA (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fERLA, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fERLA, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fTRIA (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fTRIA (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fTRIA, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fTRIA, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fBETA (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fBETA (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fBETA, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fBETA, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fDISC (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fDISC (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fDISC, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fDISC, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fTNOW (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fTNOW (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fTNOW, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fTNOW, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fTFIN (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fTFIN (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fTFIN, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fTFIN, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fNR (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fNR (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fNR, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fNR, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fMR (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fMR (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fMR, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fMR, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fIRF (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fIRF (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fIRF, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fIRF, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fRESSEIZES (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fRESSEIZES (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fRESSEIZES, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fRESSEIZES, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fSTATE (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fSTATE (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fSTATE, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fSTATE, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fNQ (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fNQ (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fNQ, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fNQ, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fFIRSTINQ (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fFIRSTINQ (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fFIRSTINQ, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fFIRSTINQ, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_fLASTINQ (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_fLASTINQ (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::fLASTINQ, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::fLASTINQ, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_cIF (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_cIF (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::cIF, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::cIF, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_cELSE (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_cELSE (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::cELSE, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::cELSE, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_cFOR (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_cFOR (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::cFOR, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::cFOR, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_cTO (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_cTO (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::cTO, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::cTO, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_cDO (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_cDO (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::cDO, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::cDO, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_ILLEGAL (YY_COPY (obj_t) v, YY_COPY (location_type) l)
+  genesyspp_parser::make_ILLEGAL (const obj_t& v, const location_type& l)
   {
-    return symbol_type (token::ILLEGAL, YY_MOVE (v), YY_MOVE (l));
+    return symbol_type (token::ILLEGAL, v, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_LPAREN (YY_COPY (location_type) l)
+  genesyspp_parser::make_LPAREN (const location_type& l)
   {
-    return symbol_type (token::LPAREN, YY_MOVE (l));
+    return symbol_type (token::LPAREN, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_RPAREN (YY_COPY (location_type) l)
+  genesyspp_parser::make_RPAREN (const location_type& l)
   {
-    return symbol_type (token::RPAREN, YY_MOVE (l));
+    return symbol_type (token::RPAREN, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_PLUS (YY_COPY (location_type) l)
+  genesyspp_parser::make_PLUS (const location_type& l)
   {
-    return symbol_type (token::PLUS, YY_MOVE (l));
+    return symbol_type (token::PLUS, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_MINUS (YY_COPY (location_type) l)
+  genesyspp_parser::make_MINUS (const location_type& l)
   {
-    return symbol_type (token::MINUS, YY_MOVE (l));
+    return symbol_type (token::MINUS, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_STAR (YY_COPY (location_type) l)
+  genesyspp_parser::make_STAR (const location_type& l)
   {
-    return symbol_type (token::STAR, YY_MOVE (l));
+    return symbol_type (token::STAR, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_SLASH (YY_COPY (location_type) l)
+  genesyspp_parser::make_SLASH (const location_type& l)
   {
-    return symbol_type (token::SLASH, YY_MOVE (l));
+    return symbol_type (token::SLASH, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_LESS (YY_COPY (location_type) l)
+  genesyspp_parser::make_LESS (const location_type& l)
   {
-    return symbol_type (token::LESS, YY_MOVE (l));
+    return symbol_type (token::LESS, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_GREATER (YY_COPY (location_type) l)
+  genesyspp_parser::make_GREATER (const location_type& l)
   {
-    return symbol_type (token::GREATER, YY_MOVE (l));
+    return symbol_type (token::GREATER, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_ASSIGN (YY_COPY (location_type) l)
+  genesyspp_parser::make_ASSIGN (const location_type& l)
   {
-    return symbol_type (token::ASSIGN, YY_MOVE (l));
+    return symbol_type (token::ASSIGN, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_COMMA (YY_COPY (location_type) l)
+  genesyspp_parser::make_COMMA (const location_type& l)
   {
-    return symbol_type (token::COMMA, YY_MOVE (l));
+    return symbol_type (token::COMMA, l);
   }
 
-  inline
   genesyspp_parser::symbol_type
-  genesyspp_parser::make_NEG (YY_COPY (location_type) l)
+  genesyspp_parser::make_NEG (const location_type& l)
   {
-    return symbol_type (token::NEG, YY_MOVE (l));
+    return symbol_type (token::NEG, l);
   }
 
 
 
 } // yy
-#line 2026 "../Genesys++-parser.h" // lalr1.cc:403
+#line 1868 "../Genesys++-parser.h" // lalr1.cc:380
 
 
 

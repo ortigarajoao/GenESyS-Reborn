@@ -1053,7 +1053,7 @@ YY_RULE_SETUP
 case 25:
 YY_RULE_SETUP
 #line 105 "Genesys++-scanner.ll"
-{return yy::genesyspp_parser::make_fNORM(obj_t(0, std::string(yytext)), loc); std::cout << "NORMAL\n";}
+{return yy::genesyspp_parser::make_fNORM(obj_t(0, std::string(yytext)), loc);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
@@ -1225,11 +1225,11 @@ case 59:
 YY_RULE_SETUP
 #line 151 "Genesys++-scanner.ll"
 {
-        std::cout << "Found LITTERAL: " << yytext << std::endl;
         //getAttributeValue not implemented, change comparisson on future
         double attribute = driver.getModel()->getSimulation()->getCurrentEntity()->getAttributeValue(std::string(yytext));
         if(attribute != -1){
-          return yy::genesyspp_parser::make_ATRIB(obj_t(attribute, Util::TypeOf<Attribute>(), -1),loc);
+          //does nothing now because getAttributeValue not implemented
+          //return yy::genesyspp_parser::make_ATRIB(obj_t(attribute, Util::TypeOf<Attribute>(), -1),loc);
         }
         //iterates through the model Infrastructures and returns its id and the matching token
         std::list<std::string>* listaDisponiveis = driver.getModel()->getInfraManager()->getInfrastructureTypenames();
@@ -1250,26 +1250,25 @@ YY_RULE_SETUP
             }
           }
         }
-        std::cout << "NOT Found LITTERAL"<< std::endl;
         //Case not found retturns a illegal token
         return yy::genesyspp_parser::make_ILLEGAL(obj_t(0, std::string("Illegal")), loc);
       }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 182 "Genesys++-scanner.ll"
+#line 181 "Genesys++-scanner.ll"
 {return yy::genesyspp_parser::make_ILLEGAL(obj_t(1, std::string("Illegal")), loc);}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 184 "Genesys++-scanner.ll"
+#line 183 "Genesys++-scanner.ll"
 {return yy::genesyspp_parser::make_END(loc);}
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 187 "Genesys++-scanner.ll"
+#line 186 "Genesys++-scanner.ll"
 ECHO;
 	YY_BREAK
-#line 1272 "../Genesys++-scanner.cpp"
+#line 1271 "../Genesys++-scanner.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2236,7 +2235,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 187 "Genesys++-scanner.ll"
+#line 186 "Genesys++-scanner.ll"
 
 
 void
@@ -2255,12 +2254,10 @@ genesyspp_driver::scan_begin_file ()
 void genesyspp_driver::scan_begin_str ()
 {
   //yy_flex_debug = trace_scanning;
-  if(!str_to_parse.empty()){
-    //std::cout << "String nao vazia\n";
+  if(!str_to_parse.empty()){    
     yy_scan_string (str_to_parse.c_str()); //maybe throw exception on else
   }else{
     std::string str("0");
-    //std::cout << "String vazia\n";
     yy_scan_string (str.c_str()); //maybe throw exception on else
   }
 }
