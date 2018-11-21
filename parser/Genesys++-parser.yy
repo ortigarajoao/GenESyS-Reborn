@@ -82,7 +82,6 @@ class genesyspp_driver;
 %token <obj_t> cTO
 %token <obj_t> cDO
 %token <obj_t> ILLEGAL     /* illegal token */
-%token <obj_t> TESTE
 %token LPAREN "("
 %token RPAREN ")"
 %token PLUS "+"
@@ -93,10 +92,8 @@ class genesyspp_driver;
 %token GREATER ">"
 %token ASSIGN "="
 %token COMMA ","
-//%token <obj_t> END //EOF
 %token END 0 "end of file" //need to declare, as bison doesnt in especific situation
 
-%type <obj_t> tes
 %type <obj_t> input
 %type <obj_t> programa
 %type <obj_t> expressao
@@ -119,21 +116,21 @@ class genesyspp_driver;
 %type <obj_t> listaparm
 %type <obj_t> illegal
 
-%left oNOT
-%left oAND oOR
-%left oLE oGE oEQ oNE '<' '>'
-%left '+' '-'
-%left '*' '/'
-%left fAINT fMOD fINT fFRAC
+%left oNOT;
+%left oAND oOR;
+%left oLE oGE oEQ oNE LESS GREATER;
+%left MINUS PLUS;
+%left STAR SLASH;
+%precedence NEG;
+%left fAINT fMOD fINT fFRAC;
 
-%right MINUS
 
 //%printer { yyoutput << $$; } <*>; //prints whren something
 %%
 
 input	    : /* empty */
            | input '\n' {YYACCEPT;}
-           | input programa                                     { driver.setResult($2.valor); driver.getModel()->trace(Util::TraceLevel::mostDetailed, std::string("Resultado"));}
+           | input programa                                     { driver.setResult($2.valor); driver.getModel()->getTracer()->trace(Util::TraceLevel::mostDetailed, std::string("Resultado:" + $2.valor));}
            | illegal
            | error '\n'                                         { yyerrok; }
            ;
@@ -156,10 +153,11 @@ numero      : NUMD                                              { $$.valor = $1.
             | NUMH                                              { $$.valor = $1.valor;}
             ;
 
-aritmetica  : expressao "+" expressao                           { $$.valor = $1.valor + $3.valor;}
-            | expressao "-" expressao                           { $$.valor = $1.valor - $3.valor;}
-            | expressao "/" expressao                           { $$.valor = $1.valor / $3.valor;}
-            | expressao "*" expressao                           { $$.valor = $1.valor * $3.valor;}
+aritmetica  : expressao PLUS expressao                           { $$.valor = $1.valor + $3.valor;}
+            | expressao MINUS expressao                           { $$.valor = $1.valor - $3.valor;}
+            | expressao SLASH expressao                           { $$.valor = $1.valor / $3.valor;}
+            | expressao STAR expressao                           { $$.valor = $1.valor * $3.valor;}
+            | MINUS expressao %prec NEG                         { $$.valor = -$2.valor;}
             ;
 
 relacional  : expressao oAND expressao                          { $$.valor = (int) $1.valor && (int) $3.valor;}
@@ -186,7 +184,7 @@ comandoFOR  : cFOR variavel "=" expressao cTO expressao cDO atribuicao  {$$.valo
 
 funcao      : funcaoArit                                        { $$.valor = $1.valor; }
             | funcaoTrig                                        { $$.valor = $1.valor; }
-            | funcaoProb                                        { $$.valor = $1.valor; }
+            | funcaoProb                                        { $$.valor = $1.valor; std::cout << "Funcao PROB: " << $1.valor << "-----" << $1.tipo << std::endl;}
             | funcaoStrc                                        { $$.valor = $1.valor; }
             | funcaoUser                                        { $$.valor = $1.valor; }
             ;
@@ -201,17 +199,17 @@ atribuicao  : atributo "=" expressao                            { $$.valor = $3.
             | variavel "=" expressao                            { $$.valor = $3.valor; }
             ;
 //My implementation, check with teacher
-variavel    : VARI                                              { $$.valor = ((Variable*)(driver.getModel()->getInfrastructure(Util::TypeOf<Variable>(), $1.id)))->getValue();} //change
-            | VARI "[" expressao "]"                            { $$.valor = ((Variable*)(driver.getModel()->getInfrastructure(Util::TypeOf<Variable>(), $1.id)))->getValue(std::to_string($3.valor));}
-            | VARI "[" expressao "," expressao "]"              { std::string index(std::to_string($3.valor)); index.append(","); index.append(std::to_string($5.valor)); $$.valor = ((Variable*)(driver.getModel()->getInfrastructure(Util::TypeOf<Variable>(), $1.id)))->getValue(index);}
+variavel    : VARI                                              { $$.valor = ((Variable*)(driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Variable>(), $1.id)))->getValue();} //change
+            | VARI "[" expressao "]"                            { $$.valor = ((Variable*)(driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Variable>(), $1.id)))->getValue(std::to_string($3.valor));}
+            | VARI "[" expressao "," expressao "]"              { std::string index(std::to_string($3.valor)); index.append(","); index.append(std::to_string($5.valor)); $$.valor = ((Variable*)(driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Variable>(), $1.id)))->getValue(index);}
             ;
 
 //Formula not implemented, so will just receive a number
-formula     : NUMD                                              { $$.valor = $1.valor;} //Formula not implemented on GenESyS
+formula     : NUMD                                             { $$.valor = $1.valor; std::cout << "Formula YY\n";} //Formula not implemented on GenESyS
             ;
 
-funcaoTrig  : fSIN   "(" expressao ")"                          { $$.valor = sin($3.valor);                                         std::cout << "Sin(" << $3.valor << "):" << $$.valor << '\n';}
-            | fCOS   "(" expressao ")"                          { $$.valor = cos($3.valor); 																				std::cout << "Cos(" << $3.valor << "):" << $$.valor << '\n';}
+funcaoTrig  : fSIN   "(" expressao ")"                          { $$.valor = sin($3.valor); /*std::cout << "Sin(" << $3.valor << "):" << $$.valor << '\n';*/}
+            | fCOS   "(" expressao ")"                          { $$.valor = cos($3.valor); /*std::cout << "Cos(" << $3.valor << "):" << $$.valor << '\n';*/}
             ;
 
 funcaoArit  : fAINT  "(" expressao ")"                          { $$.valor = (int) $3.valor;}
@@ -220,40 +218,41 @@ funcaoArit  : fAINT  "(" expressao ")"                          { $$.valor = (in
             | fMOD   "(" expressao "," expressao ")"            { $$.valor = (int) $3.valor % (int) $5.valor; }
             ;
 
-funcaoProb  : fEXPO  "(" expressao ")"                                            { $$.valor = driver.getProbs().exponential(0,$3.valor); $$.tipo = "Exponencial";}
-            | fNORM  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs().normal(0,$3.valor,$5.valor); $$.tipo = "Normal"; }
-            | fUNIF  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs().uniform(0,$3.valor,$5.valor); $$.tipo = "Unificada"; }
-            | fWEIB  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs().weibull(0,$3.valor,$5.valor); $$.tipo = "Weibull"; }
-            | fLOGN  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs().logNormal(0,$3.valor,$5.valor); $$.tipo = "LOGNormal"; }
-            | fGAMM  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs().gamma(0,$3.valor,$5.valor); $$.tipo = "Gamma"; }
-            | fERLA  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs().erlang(0,$3.valor,$5.valor); $$.tipo = "Erlang"; }
-            | fTRIA  "(" expressao "," expressao "," expressao ")"                { $$.valor = driver.getProbs().triangular(0,$3.valor,$5.valor,$7.valor); $$.tipo = "Triangular"; }
-            | fBETA  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs().beta(0,$3.valor,$5.valor); $$.tipo = "Beta"; }
+funcaoProb  : fEXPO  "(" expressao ")"                                            { $$.valor = driver.getProbs()->sampleExponential($3.valor); $$.tipo = "Exponencial";}
+            | fNORM  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs()->sampleNormal($3.valor,$5.valor); $$.tipo = "Normal"; std::cout << "NORMAL YY\n";}
+            | fUNIF  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs()->sampleUniform($3.valor,$5.valor); $$.tipo = "Unificada"; }
+            | fWEIB  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs()->sampleWeibull($3.valor,$5.valor); $$.tipo = "Weibull"; }
+            | fLOGN  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs()->sampleLogNormal($3.valor,$5.valor); $$.tipo = "LOGNormal"; }
+            | fGAMM  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs()->sampleGamma($3.valor,$5.valor); $$.tipo = "Gamma"; }
+            | fERLA  "(" expressao "," expressao ")"                              { $$.valor = driver.getProbs()->sampleErlang($3.valor,$5.valor); $$.tipo = "Erlang"; }
+            | fTRIA  "(" expressao "," expressao "," expressao ")"                { $$.valor = driver.getProbs()->sampleTriangular($3.valor,$5.valor,$7.valor); $$.tipo = "Triangular"; }
+            | fBETA  "(" expressao "," expressao "," expressao "," expressao ")"  { $$.valor = driver.getProbs()->sampleBeta($3.valor,$5.valor,$7.valor,$9.valor); $$.tipo = "Beta"; }
             | fDISC  "(" listaparm ")"
             ;
 
-funcaoStrc  : fNQ       "(" QUEUE ")"                           { $$.valor = ((Queue*)(driver.getModel()->getInfrastructure(Util::TypeOf<Queue>(), $3.id)))->size();}
+funcaoStrc  : fNQ       "(" QUEUE ")"                           { $$.valor = ((Queue*)(driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Queue>(), $3.id)))->size();}
             | fLASTINQ  "(" QUEUE ")"                           {/*For now does nothing because need acces to list of QUEUE, or at least the last element*/ }
-            | fFIRSTINQ "(" QUEUE ")"                           { if (((Queue*)(driver.getModel()->getInfrastructure(Util::TypeOf<Queue>(), $3.id)))->size() > 0){
-                                                                    $$.valor = ((Queue*)(driver.getModel()->getInfrastructure(Util::TypeOf<Queue>(), $3.id)))->first()->getEntity()->getId();
+            | fFIRSTINQ "(" QUEUE ")"                           { if (((Queue*)(driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Queue>(), $3.id)))->size() > 0){
+                                                                    //id da 1a entidade da fila, talvez pegar nome
+                                                                    $$.valor = ((Queue*)(driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Queue>(), $3.id)))->first()->getEntity()->getId();
                                                                   }else{
                                                                     $$.valor = 0;
                                                                   }
                                                                 }
-           | fMR        "(" RES ")"                            { $$.valor = ((Resource*)driver.getModel()->getInfrastructure(Util::TypeOf<Resource>(), $3.id))->getCapacity();}
-           | fNR        "(" RES ")"                            { $$.valor = ((Resource*)driver.getModel()->getInfrastructure(Util::TypeOf<Resource>(), $3.id))->getNumberBusy();}
+           | fMR        "(" RES ")"                            { $$.valor = ((Resource*)driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Resource>(), $3.id))->getCapacity();}
+           | fNR        "(" RES ")"                            { $$.valor = ((Resource*)driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Resource>(), $3.id))->getNumberBusy();}
            | fRESSEIZES "(" RES ")"                            { /*For now does nothing because needs get Seizes, check with teacher*/}
-           | fSTATE     "(" RES ")"                            {  switch(((Resource*)driver.getModel()->getInfrastructure(Util::TypeOf<Resource>(), $3.id))->getResourceState()){
-                                                                    case Resource::ResourceState::rsIDLE:
+           | fSTATE     "(" RES ")"                            {  switch(((Resource*)driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Resource>(), $3.id))->getResourceState()){
+                                                                    case Resource::ResourceState::IDLE:
                                                                       $$.valor = -1;
                                                                       break;
-                                                                    case Resource::ResourceState::rsBUSY:
+                                                                    case Resource::ResourceState::BUSY:
                                                                       $$.valor = -2;
                                                                       break;
-                                                                    case Resource::ResourceState::rsFAILED:
+                                                                    case Resource::ResourceState::FAILED:
                                                                       $$.valor = -4;
                                                                       break;
-                                                                    case Resource::ResourceState::rsINACTIVE:
+                                                                    case Resource::ResourceState::INACTIVE:
                                                                       $$.valor = -3;
                                                                     default:
                                                                       $$.valor = -5;
@@ -261,9 +260,9 @@ funcaoStrc  : fNQ       "(" QUEUE ")"                           { $$.valor = ((Q
                                                                   }
                                                                 }
 
-           | fIRF       "(" RES ")"                            { $$.valor = ((Resource*)driver.getModel()->getInfrastructure(Util::TypeOf<Resource>(), $3.id))->getResourceState() == Resource::ResourceState::rsFAILED ? 1 : 0; }
-           | fTNOW                                             { $$.valor = driver.getModel()->getSimulatedTime();}
-           | fTFIN                                             { $$.valor = driver.getModel()->getReplicationLength();}
+           | fIRF       "(" RES ")"                            { $$.valor = ((Resource*)driver.getModel()->getInfraManager()->getInfrastructure(Util::TypeOf<Resource>(), $3.id))->getResourceState() == Resource::ResourceState::FAILED ? 1 : 0; }
+           | fTNOW                                             { $$.valor = driver.getModel()->getSimulation()->getSimulatedTime();}
+           | fTFIN                                             { $$.valor = driver.getModel()->getInfos()->getReplicationLength();}
            ;
 
 //Maybe user defined functions, check if continues on the parser, for now returns the value of expressao

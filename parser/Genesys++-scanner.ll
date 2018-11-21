@@ -35,8 +35,8 @@ static yy::location loc;
 %}
 
 I     ~[A-Za-z]+
-DD     [-]?[0-9]+([eE][-]?[0-9]+)?
-RR     [-]?[0-9]+[.][0-9]+([eE][-]?[0-9]+)?
+DD     [0-9]+([eE][-]?[0-9]+)?
+RR     [0-9]+[.][0-9]+([eE][-]?[0-9]+)?
 L      [A-Za-z0-9_.]+
 
 %%
@@ -52,7 +52,7 @@ L      [A-Za-z0-9_.]+
             //Will not fail because of regex
             std::string text("Found Hexadecimal: ");
             text += yytext;
-            driver.getModel()->trace(Util::TraceLevel::mostDetailed, text);
+            driver.getModel()->getTracer()->trace(Util::TraceLevel::mostDetailed, text);
 						return yy::genesyspp_parser::make_NUMH(obj_t(atof(yytext), std::string("Hexadecimal")),loc);
 					}
 
@@ -61,7 +61,7 @@ L      [A-Za-z0-9_.]+
        //Will not fail because of regex
        std::string text("Found Float: ");
        text += yytext;
-       driver.getModel()->trace(Util::TraceLevel::mostDetailed, text);
+       driver.getModel()->getTracer()->trace(Util::TraceLevel::mostDetailed, text);
        return yy::genesyspp_parser::make_NUMD(obj_t(atof(yytext),std::string("Float")), loc);
      }
 
@@ -70,7 +70,7 @@ L      [A-Za-z0-9_.]+
        //Will not fail because of regex
        std::string text("Found Decimal: ");
        text += yytext;
-       driver.getModel()->trace(Util::TraceLevel::mostDetailed, text);
+       driver.getModel()->getTracer()->trace(Util::TraceLevel::mostDetailed, text);
        return yy::genesyspp_parser::make_NUMD(obj_t(atof(yytext),std::string("Decimal")), loc);
       }
 
@@ -101,7 +101,7 @@ L      [A-Za-z0-9_.]+
 [iI][nN][tT]      {return yy::genesyspp_parser::make_fINT(obj_t(0, std::string(yytext)), loc);}
 
 [eE][xX][pP][oO]  {return yy::genesyspp_parser::make_fEXPO(obj_t(0, std::string(yytext)), loc);}
-[nN][oO][rR][mM]  {return yy::genesyspp_parser::make_fNORM(obj_t(0, std::string(yytext)), loc);}
+[nN][oO][rR][mM]  {return yy::genesyspp_parser::make_fNORM(obj_t(0, std::string(yytext)), loc); std::cout << "NORMAL\n";}
 [uU][nN][iI][fF]  {return yy::genesyspp_parser::make_fUNIF(obj_t(0, std::string(yytext)), loc);}
 [wW][eE][iI][bB]  {return yy::genesyspp_parser::make_fWEIB(obj_t(0, std::string(yytext)), loc);}
 [lL][oO][gG][nN]  {return yy::genesyspp_parser::make_fLOGN(obj_t(0, std::string(yytext)), loc);}
@@ -148,10 +148,16 @@ L      [A-Za-z0-9_.]+
 
 
 {L}   {
+        std::cout << "Found LITTERAL: " << yytext << std::endl;
+        //getAttributeValue not implemented, change comparisson on future
+        double attribute = driver.getModel()->getSimulation()->getCurrentEntity()->getAttributeValue(std::string(yytext));
+        if(attribute != -1){
+          return yy::genesyspp_parser::make_ATRIB(obj_t(attribute, Util::TypeOf<Attribute>(), -1),loc);
+        }
         //iterates through the model Infrastructures and returns its id and the matching token
-        std::list<std::string>* listaDisponiveis = driver.getModel()->getInfrastructureTypenames();
+        std::list<std::string>* listaDisponiveis = driver.getModel()->getInfraManager()->getInfrastructureTypenames();
         for(std::list<std::string>::iterator it = listaDisponiveis->begin(); it != listaDisponiveis->end(); ++it){
-          List<ModelInfrastructure*>* listaAtual = driver.getModel()->getInfrastructures(*it);
+          List<ModelInfrastructure*>* listaAtual = driver.getModel()->getInfraManager()->getInfrastructures(*it);
           for(std::list<ModelInfrastructure*>::iterator it2 = listaAtual->getList()->begin(); it2 != listaAtual->getList()->end(); ++it2){
             if((*it2)->getName() == std::string(yytext)){//case sensitive names
               if (*it == Util::TypeOf<Variable>()){
@@ -163,13 +169,11 @@ L      [A-Za-z0-9_.]+
               if (*it == Util::TypeOf<Resource>()){
                 return yy::genesyspp_parser::make_RES(obj_t(0, Util::TypeOf<Resource>(), (*it2)->getId()),loc);
               }
-              if (*it == Util::TypeOf<Attribute>()){//Attribute not fully implemented on GenESyS or need access to current entity
-                return yy::genesyspp_parser::make_ATRIB(obj_t(0, Util::TypeOf<Attribute>(), (*it2)->getId()),loc);
-              }
               //Formula not implemented on Genesys
             }
           }
         }
+        std::cout << "NOT Found LITTERAL"<< std::endl;
         //Case not found retturns a illegal token
         return yy::genesyspp_parser::make_ILLEGAL(obj_t(0, std::string("Illegal")), loc);
       }
@@ -220,4 +224,3 @@ genesyspp_driver::scan_end_str ()
 {
   yy_delete_buffer(YY_CURRENT_BUFFER);
 }
-
